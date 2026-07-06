@@ -1,8 +1,8 @@
-# Dissecting a Housing Market: A Mathematical EDA Framework Built from First Principles
+# Anatomy of a Housing Market: From Raw Data to Predictive Models
 
 ## Project Summary
 
-An end-to-end exploratory data analysis of the **Ames Housing dataset** (1,460 homes × 81 features), taking the data from raw and incomplete to cleaned, understood, and modelling-ready. The notebook performs a domain-aware data-quality audit, then studies the target `SalePrice` and its strongest drivers through descriptive statistics, distribution analysis, and bivariate correlation — narrating the *why* behind every statistical choice rather than just producing plots.
+A multi-notebook project on statistics and machine learning, built around the Ames Housing dataset as a running case study. It moves end to end: from raw data through sampling, hypothesis testing, regression, and classification. Each notebook builds on the one before it, and every decision is explained, not just applied. The first notebook (01) handles exploratory data analysis: cleaning the data and digging into SalePrice, its distribution, its strongest drivers, and what needs fixing before modeling can begin.
 
 ## Project Status
 
