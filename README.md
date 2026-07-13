@@ -25,7 +25,7 @@ A multi-notebook project on statistics and machine learning, built around the Am
 - **Predictors are collinear with each other.** `GarageCars`/`GarageArea` and `TotalBsmtSF`/`1stFlrSF` each measure overlapping information — relevant for any downstream regression model.
 - **Most "missing" data isn't missing.** Of the columns with nulls, the majority (e.g. `PoolQC`, `Alley`, basement/garage fields) encode *absence of the feature*, not lost records; only `LotFrontage` (259 nulls) and `Electrical` (1 null) required genuine imputation.
 
-## Mathematical Concepts Implemented from Scratch
+## Mathematical Concepts Implemented
 
 - **Central tendency & robustness** — mean, median, and 10% trimmed mean compared side by side to quantify skew.
 - **Dispersion via order statistics** — percentiles (5/25/50/75/95) and the interquartile range, visualised with a boxplot.
