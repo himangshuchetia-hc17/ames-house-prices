@@ -6,7 +6,7 @@ A multi-notebook project on statistics and machine learning, built around the Am
 
 ## Project Status
 
-**Work in progress.** This project is being built as a series of notebooks that walk through statistics and machine learning from first principles, each layering on the previous one. Notebook `01` (exploratory data analysis) is almost complete; the following five are planned:
+**Work in progress.** This project is being built as a series of notebooks that walk through statistics and machine learning from first principles, each layering on the previous one. Notebook `01` (exploratory data analysis) is complete; the following five are planned:
 
 | Notebook                             | Focus                                                     |
 |--------------------------------------|-----------------------------------------------------------|
@@ -32,16 +32,19 @@ A multi-notebook project on statistics and machine learning, built around the Am
 - **Distribution shape** — skewness coefficients annotated on each histogram, and a `log1p` variance-stabilising transform.
 - **Correlation** — Pearson (linear) and Spearman (monotonic rank) matrices, used together to separate linear from non-linear association.
 - **Ordinary least squares fit line** — regression slope/intercept computed with `numpy.polyfit` and overlaid on scatter plots, with the correlation coefficient `r` labelled per feature.
+- **Bivariate density estimation** — hexagonal binning (`hexbin`) and kernel density contours (`kdeplot`) used to expose overplotting that a scatter plot hides once predictors get dense.
+- **Categorical-vs-numeric distribution** — violin plot of `SalePrice` grouped by `OverallQual` with inner quartiles to compare both spread and central tendency per group.
 - **Group-wise median imputation** — `LotFrontage` filled with the median of its own `Neighborhood` to preserve local distribution.
 
-## Visualizations
+## Few Visualizations
 
 |                                                                                                     |                                                                                                    |
 |-----------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
 | ![Sale Price Boxplot](figures/01_exploratory_data_analysis/SalePriceBoxplot.png)                    | ![Sale Price Histogram](figures/01_exploratory_data_analysis/SalePriceHistogram.png)               |
 | ![Log-Transformed Sale Price Density](figures/01_exploratory_data_analysis/LogSalePriceDensity.png) | ![Numeric Feature Histograms](figures/01_exploratory_data_analysis/NumColsHistogram.png)           |
 | ![Categorical Feature Bar Charts](figures/01_exploratory_data_analysis/CatColsBar.png)              | ![Sale Price Scatter Grid](figures/01_exploratory_data_analysis/SalePriceScatterGrid.png)          |
-| ![Pearson Correlation Matrix](figures/01_exploratory_data_analysis/PearsonCorrelationMatrix.png)    | ![Spearman Correlation Matrix](figures/01_exploratory_data_analysis/SpearmanCorrelationMatrix.png) |
+| ![Sale Price Hexbin Grid](figures/01_exploratory_data_analysis/SalePriceHexbinGrid.png)             | ![Sale Price Contour Grid](figures/01_exploratory_data_analysis/SalePriceContourGrid.png)          |
+| ![Sale Price vs OverallQual Violin](figures/01_exploratory_data_analysis/SalePriceOverallQualViolin.png) | ![Pearson Correlation Matrix](figures/01_exploratory_data_analysis/PearsonCorrelationMatrix.png)    |
 
 ## How to Run
 
@@ -53,7 +56,12 @@ pip install -r requirements.txt
 jupyter notebook notebooks/01_exploratory_data_analysis.ipynb
 ```
 
-Run the cells top to bottom. The dataset is fetched automatically via `sklearn.datasets.fetch_openml`, so no manual download is needed. The notebook writes the cleaned dataset to `data/cleaned_data.csv` and saves all figures to `figures/`. Paths are relative to the `notebooks/` directory, so run it from there (the default for Jupyter).
+Run the cells top to bottom. The dataset is fetched automatically via `sklearn.datasets.fetch_openml`, so no manual download is needed. The notebook writes the cleaned dataset to `data/cleaned_data.csv` and saves all figures to `figures/01_exploratory_data_analysis/`. Paths are relative to the `notebooks/` directory, so run it from there (the default for Jupyter).
+
+**Outputs of notebook 01:**
+
+- `data/cleaned_data.csv` — the fully imputed 1,460 × 81 dataset, ready to be loaded by the downstream notebooks.
+- `figures/01_exploratory_data_analysis/` — 12 publication-quality PNGs (boxplot, histogram, log-density, numeric & categorical feature grids, scatter, hexbin, contour, violin, Pearson & Spearman matrices).
 
 ## Dataset
 
@@ -65,5 +73,5 @@ The **Ames Housing dataset** describes residential property sales in Ames, Iowa 
 - **Descriptive & inferential statistics** applied and interpreted, not just computed
 - **Distribution diagnostics** and transformation (skewness, log transform)
 - **Feature selection** by correlation strength and by covering distinct property domains (location, design, transaction, zoning)
-- **Data visualization** with matplotlib and seaborn (histograms, boxplots, KDE, heatmaps, annotated scatter grids)
+- **Data visualization** with matplotlib and seaborn (histograms, boxplots, KDE, heatmaps, annotated scatter, hexbin, contour, and violin grids)
 - Clear **analytical storytelling** in a reproducible notebook workflow
