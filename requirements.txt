@@ -1,4 +1,4 @@
-# Tested with the "prime" conda env (Python 3.12.13).
+# Tested with Python 3.12.13
 # The notebooks rely on pandas' native `str` dtype, which requires pandas >= 3.0.
 numpy>=2.5.1
 pandas>=3.0.3
