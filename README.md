@@ -6,7 +6,7 @@ A multi-notebook project on statistics and machine learning, built around the Am
 
 ## Project Status
 
-**Work in progress.** This project is being built as a series of notebooks that walk through statistics and machine learning from first principles, each layering on the previous one. Notebooks `01` and `02` are complete; the following four are planned:
+**Work in progress.** This project is being built as a series of notebooks that walk through statistics and machine learning from first principles, each layering on the previous one. Notebook `01` is complete and `02` is in progress; the following four are planned:
 
 | Notebook                             | Focus                                                     | Status   |
 |--------------------------------------|-----------------------------------------------------------|----------|
@@ -33,6 +33,10 @@ A multi-notebook project on statistics and machine learning, built around the Am
 - **Empirical standard error matches the theoretical `s/√n`.** For each of `n ∈ {5, 30, 100}`, the standard deviation of 1,000 simulated sample means sits on top of the theoretical curve, confirming the simulation reproduces the analytical result.
 - **Standard error shrinks with sample size, as expected.** Larger `n` gives a smaller SE, which is why the histograms for `Mean of 30` and `Mean of 100` are visibly narrower than `Mean of 5` (or the raw data).
 - **Small Monte Carlo gaps are unavoidable.** Each empirical SE is itself an estimate built from 1,000 simulated means, so it differs from theory by a small random amount. Pushing the simulation count to 10,000 or 100,000 would tighten that agreement further.
+- **The sample median is essentially unbiased for `SalePrice`.** From 10,000 bootstrap resamples of size 1,460, the bootstrap median (\$162,900.11) sits within \$100 of the observed median (\$163,000), giving a bias of −0.06%, which is well within sampling noise.
+- **The bootstrap SE of the median is ≈ \$2,364.** This is the standard deviation of the bootstrap distribution, used as a Monte Carlo estimate of the standard error of the median (no closed-form SE exists for the sample median).
+- **The 95% bootstrap percentile CI for the median is \$158,900 – \$167,700.** Taken from the 2.5th and 97.5th percentiles of the 10,000 bootstrap medians, this gives a non-parametric uncertainty band for the central price level.
+- **The bootstrap distribution is multimodal.** The histogram of bootstrap medians shows several distinct peaks rather than a smooth bell curve, which is expected — the median is a discrete statistic on dollar values, so many bootstrap samples produce identical medians.
 
 ## Mathematical Concepts Implemented
 
@@ -55,6 +59,11 @@ A multi-notebook project on statistics and machine learning, built around the Am
 - **Theoretical standard error** — `s/√n` with `s` taken as the sample standard deviation of the raw `SalePrice` column.
 - **Empirical vs. theoretical SE comparison** — line plot overlaying both curves over the same *n* axis, so the simulation can be checked against the analytical result.
 - **Skewness interpretation** — qualitative reading of histogram shape at each *n* to argue for normality of the sampling distribution even when the underlying data is strongly skewed.
+- **Bootstrap resampling** — `R = 10,000` samples of size `n = 1,460` drawn with replacement from the observed `SalePrice` column, used to estimate the sampling distribution of a statistic (here the median) for which no closed-form standard error exists.
+- **Bootstrap bias** — difference between the mean of the bootstrap distribution and the observed statistic, computed and reported in dollars to quantify estimator bias relative to the scale of the data.
+- **Bootstrap standard error** — the standard deviation of the 10,000 bootstrap medians, used as a Monte Carlo standard error for the sample median.
+- **Percentile bootstrap confidence interval** — the 2.5th and 97.5th percentiles of the bootstrap distribution taken as the lower and upper bounds of a 95% CI for the median.
+- **Distribution shape interpretation** — explaining the multimodal bootstrap histogram as a consequence of the discrete dollar values of `SalePrice` (many bootstrap samples produce identical medians), rather than treating it as a violation of normality.
 
 ## Few Visualizations
 
@@ -73,6 +82,7 @@ A multi-notebook project on statistics and machine learning, built around the Am
 |                                                                                                                                                |                                                                                                                                                |
 |------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
 | ![Sampling Distributions of the Mean](figures/02_data_and_sampling_distributions/SamplingDistribution.png)                                     | ![Empirical vs Theoretical Standard Error](figures/02_data_and_sampling_distributions/EmpiricalvsTheoreticalSE.png)                           |
+| ![Bootstrap Distribution of SalePrice Median](figures/02_data_and_sampling_distributions/BootstrapDistributionOfSalePriceMedian.png)          |                                                                                                                                                |
 
 ## How to Run
 
@@ -94,9 +104,11 @@ Run the cells top to bottom. The dataset is fetched automatically via `sklearn.d
 
 **Outputs of notebook 02:**
 
-- `figures/02_data_and_sampling_distributions/` — 2 publication-quality PNGs:
+- `figures/02_data_and_sampling_distributions/` — 3 publication-quality PNGs:
   - `SamplingDistribution.png` — facet grid of the raw data and the sampling distribution of the mean for *n* = 5, 30, 100.
   - `EmpiricalvsTheoreticalSE.png` — empirical SE (from 1,000 simulated means) plotted against the theoretical `σ/√n` curve.
+  - `BootstrapDistributionOfSalePriceMedian.png` — histogram of 10,000 bootstrap medians with the observed median marked.
+- Stdout — the bootstrap analysis also prints the original median, bootstrap median, bias, bootstrap SE, and the 95% percentile CI.
 
 ## Dataset
 
@@ -108,6 +120,7 @@ The **Ames Housing dataset** describes residential property sales in Ames, Iowa 
 - **Descriptive & inferential statistics** applied and interpreted, not just computed
 - **Distribution diagnostics** and transformation (skewness, log transform)
 - **Monte Carlo simulation** of sampling distributions and **empirical estimation of standard error**
+- **Bootstrap resampling** for statistics with no closed-form standard error (here, the median), including bootstrap bias, SE, and percentile confidence intervals
 - **Empirical vs. theoretical model checking** — comparing a simulation result against the analytical `σ/√n` curve
 - **Feature selection** by correlation strength and by covering distinct property domains (location, design, transaction, zoning)
 - **Data visualization** with matplotlib and seaborn (histograms, boxplots, KDE, heatmaps, annotated scatter, hexbin, contour, violin, facet grids, and line plots)
