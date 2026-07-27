@@ -6,7 +6,7 @@ A multi-notebook project on statistics and machine learning, built around the Am
 
 ## Project Status
 
-**Work in progress.** This project is being built as a series of notebooks that walk through statistics and machine learning from first principles, each layering on the previous one. Notebook `01` is complete and `02` is in progress; the following four are planned:
+**Work in progress.** This project is being built as a series of notebooks that walk through statistics and machine learning from first principles, each layering on the previous one. Notebooks `01` is complete and `02` is in progress; the following four are planned:
 
 | Notebook                             | Focus                                                     | Status   |
 |--------------------------------------|-----------------------------------------------------------|----------|
@@ -33,8 +33,8 @@ A multi-notebook project on statistics and machine learning, built around the Am
 - **Empirical standard error matches the theoretical `s/√n`.** For each of `n ∈ {5, 30, 100}`, the standard deviation of 1,000 simulated sample means sits on top of the theoretical curve, confirming the simulation reproduces the analytical result.
 - **Standard error shrinks with sample size, as expected.** Larger `n` gives a smaller SE, which is why the histograms for `Mean of 30` and `Mean of 100` are visibly narrower than `Mean of 5` (or the raw data).
 - **Small Monte Carlo gaps are unavoidable.** Each empirical SE is itself an estimate built from 1,000 simulated means, so it differs from theory by a small random amount. Pushing the simulation count to 10,000 or 100,000 would tighten that agreement further.
-- **The sample median is essentially unbiased for `SalePrice`.** From 10,000 bootstrap resamples of size 1,460, the bootstrap median (\$162,900.11) sits within \$100 of the observed median (\$163,000), giving a bias of −0.06%, which is well within sampling noise.
-- **The bootstrap SE of the median is ≈ \$2,364.** This is the standard deviation of the bootstrap distribution, used as a Monte Carlo estimate of the standard error of the median (no closed-form SE exists for the sample median).
+- **The sample median is essentially unbiased for `SalePrice`.** From 10,000 bootstrap resamples of size 1,460, the bootstrap median (\$162,939.99) sits within \$61 of the observed median (\$163,000), giving a bias of −\$60.01 (−0.04%), which is well within sampling noise.
+- **The bootstrap SE of the median is ≈ \$2,369.** This is the standard deviation of the bootstrap distribution, used as a Monte Carlo estimate of the standard error of the median (no closed-form SE exists for the sample median).
 - **The 95% bootstrap percentile CI for the median is \$158,900 – \$167,700.** Taken from the 2.5th and 97.5th percentiles of the 10,000 bootstrap medians, this gives a non-parametric uncertainty band for the central price level.
 - **The bootstrap distribution is multimodal.** The histogram of bootstrap medians shows several distinct peaks rather than a smooth bell curve, which is expected — the median is a discrete statistic on dollar values, so many bootstrap samples produce identical medians.
 
