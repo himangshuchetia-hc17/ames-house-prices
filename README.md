@@ -6,7 +6,7 @@ A multi-notebook project on statistics and machine learning, built around the Am
 
 ## Project Status
 
-**Work in progress.** This project is being built as a series of notebooks that walk through statistics and machine learning from first principles, each layering on the previous one. Notebooks `01` is complete and `02` is in progress; the following four are planned:
+**Work in progress.** This project is being built as a series of notebooks that walk through statistics and machine learning from first principles, each layering on the previous one. Notebook `01` is complete; notebook `02` is in progress (sampling, bootstrap, and QQ-plot diagnostics are in, but the notebook is not yet considered final); the following four are planned:
 
 | Notebook                             | Focus                                                     | Status   |
 |--------------------------------------|-----------------------------------------------------------|----------|
@@ -33,10 +33,12 @@ A multi-notebook project on statistics and machine learning, built around the Am
 - **Empirical standard error matches the theoretical `s/√n`.** For each of `n ∈ {5, 30, 100}`, the standard deviation of 1,000 simulated sample means sits on top of the theoretical curve, confirming the simulation reproduces the analytical result.
 - **Standard error shrinks with sample size, as expected.** Larger `n` gives a smaller SE, which is why the histograms for `Mean of 30` and `Mean of 100` are visibly narrower than `Mean of 5` (or the raw data).
 - **Small Monte Carlo gaps are unavoidable.** Each empirical SE is itself an estimate built from 1,000 simulated means, so it differs from theory by a small random amount. Pushing the simulation count to 10,000 or 100,000 would tighten that agreement further.
-- **The sample median is essentially unbiased for `SalePrice`.** From 10,000 bootstrap resamples of size 1,460, the bootstrap median (\$162,939.99) sits within \$61 of the observed median (\$163,000), giving a bias of −\$60.01 (−0.04%), which is well within sampling noise.
-- **The bootstrap SE of the median is ≈ \$2,369.** This is the standard deviation of the bootstrap distribution, used as a Monte Carlo estimate of the standard error of the median (no closed-form SE exists for the sample median).
-- **The 95% bootstrap percentile CI for the median is \$158,900 – \$167,700.** Taken from the 2.5th and 97.5th percentiles of the 10,000 bootstrap medians, this gives a non-parametric uncertainty band for the central price level.
+- **The sample median is essentially unbiased for `SalePrice`.** From 10,000 bootstrap resamples of size 1,460, the bootstrap median (\$162,909.42) sits within \$91 of the observed median (\$163,000), giving a bias of −\$90.58 (−0.06%), which is well within sampling noise.
+- **The bootstrap SE of the median is ≈ \$2,363.** This is the standard deviation of the bootstrap distribution, used as a Monte Carlo estimate of the standard error of the median (no closed-form SE exists for the sample median).
+- **The 95% bootstrap percentile CI for the median is \$158,900 – \$167,500.** Taken from the 2.5th and 97.5th percentiles of the 10,000 bootstrap medians, this gives a non-parametric uncertainty band for the central price level.
 - **The bootstrap distribution is multimodal.** The histogram of bootstrap medians shows several distinct peaks rather than a smooth bell curve, which is expected — the median is a discrete statistic on dollar values, so many bootstrap samples produce identical medians.
+- **`SalePrice` is visibly non-normal on a QQ-plot.** A normal QQ-plot of the raw prices follows the reference line through the bulk of the data but pulls sharply above it in the upper tail, confirming the right skew and heavy upper tail seen in the histogram.
+- **`log1p(SalePrice)` is much closer to normal.** The same QQ-plot on `log1p(SalePrice)` hugs the reference line end to end, with only minor deviations in the lower and upper tails — quantitative evidence that the log transform is the right variance-stabilizer for downstream modelling.
 
 ## Mathematical Concepts Implemented
 
@@ -64,6 +66,9 @@ A multi-notebook project on statistics and machine learning, built around the Am
 - **Bootstrap standard error** — the standard deviation of the 10,000 bootstrap medians, used as a Monte Carlo standard error for the sample median.
 - **Percentile bootstrap confidence interval** — the 2.5th and 97.5th percentiles of the bootstrap distribution taken as the lower and upper bounds of a 95% CI for the median.
 - **Distribution shape interpretation** — explaining the multimodal bootstrap histogram as a consequence of the discrete dollar values of `SalePrice` (many bootstrap samples produce identical medians), rather than treating it as a violation of normality.
+- **Z-score standardization** — `scipy.stats.zscore` applied to `SalePrice` to produce a unit-variance series (verified mean ≈ 0, std ≈ 1), as a precursor to QQ-plot diagnostics against the standard normal.
+- **Normal QQ-plot** — `scipy.stats.probplot` against a normal reference distribution, used to read off deviations from normality in the bulk and the tails. The raw `SalePrice` QQ-plot exposes the heavy upper tail as a clean upward bend in the rightmost points.
+- **Transform-and-compare** — repeating the QQ-plot on `log1p(SalePrice)` to quantify how much the log transform repairs the upper-tail deviation, separating "skewed but linear in the middle" from "approximately normal end to end."
 
 ## Few Visualizations
 
@@ -82,7 +87,8 @@ A multi-notebook project on statistics and machine learning, built around the Am
 |                                                                                                                                                |                                                                                                                                                |
 |------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
 | ![Sampling Distributions of the Mean](figures/02_data_and_sampling_distributions/SamplingDistribution.png)                                     | ![Empirical vs Theoretical Standard Error](figures/02_data_and_sampling_distributions/EmpiricalvsTheoreticalSE.png)                           |
-| ![Bootstrap Distribution of SalePrice Median](figures/02_data_and_sampling_distributions/BootstrapDistributionOfSalePriceMedian.png)          |                                                                                                                                                |
+| ![Bootstrap Distribution of SalePrice Median](figures/02_data_and_sampling_distributions/BootstrapDistributionOfSalePriceMedian.png)          | ![Standardized SalePrice Histogram](figures/02_data_and_sampling_distributions/StandardizedSalePriceHist.png)                                 |
+| ![SalePrice QQ-plot](figures/02_data_and_sampling_distributions/SalePriceQQplot.png)                                                            | ![Log SalePrice QQ-plot](figures/02_data_and_sampling_distributions/LogSalePriceQQplot.png)                                                   |
 
 ## How to Run
 
@@ -102,12 +108,9 @@ Run the cells top to bottom. The dataset is fetched automatically via `sklearn.d
 - `data/cleaned_data.csv` — the fully imputed 1,460 × 81 dataset, ready to be loaded by the downstream notebooks.
 - `figures/01_exploratory_data_analysis/` — 11 publication-quality PNGs (boxplot, histogram, log-density, numeric & categorical feature grids, scatter, hexbin, contour, violin, Pearson & Spearman matrices).
 
-**Outputs of notebook 02:**
+**Outputs of notebook 02 (in progress):**
 
-- `figures/02_data_and_sampling_distributions/` — 3 publication-quality PNGs:
-  - `SamplingDistribution.png` — facet grid of the raw data and the sampling distribution of the mean for *n* = 5, 30, 100.
-  - `EmpiricalvsTheoreticalSE.png` — empirical SE (from 1,000 simulated means) plotted against the theoretical `σ/√n` curve.
-  - `BootstrapDistributionOfSalePriceMedian.png` — histogram of 10,000 bootstrap medians with the observed median marked.
+- `figures/02_data_and_sampling_distributions/` — 6 publication-quality PNGs (sampling-distribution facet grid, empirical vs theoretical SE line plot, bootstrap-median histogram, standardized-`SalePrice` histogram, raw `SalePrice` QQ-plot, and log-`SalePrice` QQ-plot).
 - Stdout — the bootstrap analysis also prints the original median, bootstrap median, bias, bootstrap SE, and the 95% percentile CI.
 
 ## Dataset
