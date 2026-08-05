@@ -1,13 +1,13 @@
 # Anatomy of a Housing Market
 
-A notebook-based statistics and machine-learning project using the Ames Housing dataset. It follows the data from cleaning and exploratory analysis through sampling, inference, regression, and classification.
+A multi-notebook project on statistics and machine learning, built around the Ames Housing dataset as a running case study. It moves end to end: from raw data through sampling, hypothesis testing, regression, and classification. Each notebook builds on the one before it, and every decision is explained, not just applied.
 
 ## Status
 
 | Notebook | Topic | Status |
 | --- | --- | --- |
 | [01 — Exploratory data analysis](notebooks/01_exploratory_data_analysis.ipynb) | Cleaning, univariate and bivariate EDA | Complete |
-| [02 — Data and sampling distributions](notebooks/02_data_and_sampling_distributions.ipynb) | Sampling, bootstrap, CLT, and QQ plots | Ongoing |
+| [02 — Data and sampling distributions](notebooks/02_data_and_sampling_distributions.ipynb) | Sampling, bootstrap, CLT, and QQ plots | Complete |
 | 03 — Experiments and testing | Hypothesis testing and A/B testing | Planned |
 | 04 — Regression and prediction | Linear and multiple regression | Planned |
 | 05 — Classification | Classification models and evaluation | Planned |
